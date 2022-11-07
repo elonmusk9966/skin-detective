@@ -1,13 +1,20 @@
 import torch
 import torchvision.transforms as transforms
 import torch.nn as nn
+import gdown
 
 img_size = (224, 224)
+
+# Label information
 label2id = {'ez':0, 'ps':1, 'others':2}
 id2label = {v:k for k, v in label2id.items()}
 
-model = torch.load('./best-model-fold-0.pt', map_location ='cpu')
+def download_model(url, output='model.pt'):
+    gdown.download(url, output, quiet=False)
 
+
+download_model("https://drive.google.com/u/0/uc?id=1GH-YFFloEULAEU3bk55iLJkRV3z9hbKL&export=download&confirm=t")
+model = torch.load('./model.pt', map_location ='cpu')
 
 def get_prediction(image, thres=0):
     global  model
@@ -31,4 +38,3 @@ def get_prediction(image, thres=0):
     result = {'ez': output[0], 'ps': output[1], 'others': output[2]}
 
     return result
-
