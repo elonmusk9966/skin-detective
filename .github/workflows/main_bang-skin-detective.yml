@@ -11,9 +11,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v3
 
@@ -32,29 +31,7 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html --no-cache-dir
         
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      
-      - name: Upload artifact for deployment jobs
-        uses: actions/upload-artifact@v3
-        with:
-          name: python-app
-          path: |
-            . 
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: python-app
-          path: .
-          
+    
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
         id: deploy-to-webapp
@@ -62,3 +39,5 @@ jobs:
           app-name: 'bang-skin-detective'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1D4C98D3E0AE47BE83A86E4C0160E37F }}
+          
+
