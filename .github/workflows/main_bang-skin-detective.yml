@@ -31,6 +31,10 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html --no-cache-dir
+          ls
+          pip --version
+          which pip
+          
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
