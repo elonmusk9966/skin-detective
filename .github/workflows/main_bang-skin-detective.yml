@@ -14,24 +14,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python version
-        uses: actions/setup-python@v4
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
         with:
-          python-version: '3.7'
-
-      - name: Create and start virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-      
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt -f https://download.pytorch.org/whl/torch_stable.html --no-cache-dir
-        
-    
+          name: python-app
+          path: .
+          
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
