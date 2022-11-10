@@ -13,8 +13,8 @@ def download_model(url, output='model.pt'):
     gdown.download(url, output, quiet=False)
 
 
-# download_model("https://drive.google.com/u/0/uc?id=1GH-YFFloEULAEU3bk55iLJkRV3z9hbKL&export=download&confirm=t")
-# model = torch.load('./model.pt', map_location ='cpu')
+download_model("https://drive.google.com/u/0/uc?id=1GH-YFFloEULAEU3bk55iLJkRV3z9hbKL&export=download&confirm=t")
+model = torch.load('./model.pt', map_location ='cpu')
 
 def get_prediction(image, thres=0):
     global  model
