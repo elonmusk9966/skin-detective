@@ -33,7 +33,7 @@ jobs:
         
     
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@0b651ed7546ecfc75024011f76944cb9b381ef1e
+        uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
           app-name: 'bang-skin-detective'
