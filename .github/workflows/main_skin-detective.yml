@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'skin-detective'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_254FB9C09EC04DEA8FE236A573EFC3EC }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C041D117872C4C37B3AB47B1FF03DD4A }}
