@@ -1,3 +1,4 @@
+azure-cli==2.0.75
 Flask
 numpy
 Pillow
