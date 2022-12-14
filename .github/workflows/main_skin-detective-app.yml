@@ -56,7 +56,6 @@ jobs:
       - name: Configure deployment and runtime settings on the webapp
         run: |
           az webapp config appsettings --name ${{ env.WEBAPP_NAME }} --settings \
-              SCM_DO_BUILD_DURING_DEPLOYMENT=true \
               FLASK_ENV=production
           az webapp config set --name ${{ env.WEBAPP_NAME }} \
               --startup-file "gunicorn -k uvicorn.workers.UvicornWorker --bind=0.0.0.0 --timeout 60 app:app"
