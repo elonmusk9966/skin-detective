@@ -3,6 +3,9 @@
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
 name: Build and deploy Python app to Azure Web App - skin-detective-app
+env:
+  WEBAPP_NAME: 'skin-detective-app'             # Replace with the name of your Azure web app
+  RESOURCE_GROUP: 'skin-detective'   # Replace with the name of your Resource Group
 
 on:
   push:
@@ -55,8 +58,10 @@ jobs:
           
       - name: Configure deployment and runtime settings on the webapp
         run: |
-          az webapp config set --startup-file "gunicorn -k uvicorn.workers.UvicornWorker --bind=0.0.0.0 --timeout 60 app:app"
-        
+          az configure --defaults ${{ env.RESOURCE_GROUP }}
+          az webapp config appsettings --name ${{ env.WEBAPP_NAME }} --settings SCM_DO_BUILD_DURING_DEPLOYMENT=true FLASK_ENV=production
+          az webapp config set --name ${{ env.WEBAPP_NAME }} --startup-file "gunicorn -k uvicorn.workers.UvicornWorker --bind=0.0.0.0 --timeout 60 app:app"
+
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
