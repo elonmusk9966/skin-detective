@@ -3,9 +3,6 @@
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
 name: Build and deploy Python app to Azure Web App - skin-detective-app
-env:
-  WEBAPP_NAME: "skin-detective-app" # Replace with the name of your Azure web app
-  RESOURCE_GROUP: "skin-detective"   # Replace with the name of your Resource Group
 
 on:
   push:
@@ -21,9 +18,9 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Set up Python version
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v1
         with:
-          python-version: '3.7'
+          python-version: '3.8'
 
       - name: Create and start virtual environment
         run: |
@@ -32,9 +29,9 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
-        
+
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
@@ -55,12 +52,6 @@ jobs:
         with:
           name: python-app
           path: .
-          
-      - name: Configure deployment and runtime settings on the webapp
-        run: |
-          az configure --defaults group=${{ env.RESOURCE_GROUP }}
-          az webapp config appsettings --name "${{ env.WEBAPP_NAME }}" --settings "SCM_DO_BUILD_DURING_DEPLOYMENT=true FLASK_ENV=production"
-          az webapp config set --name "${{ env.WEBAPP_NAME }}" --startup-file "gunicorn -k uvicorn.workers.UvicornWorker --bind=0.0.0.0 --timeout 60 app:app"
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -68,3 +59,4 @@ jobs:
         with:
           app-name: 'skin-detective-app'
           slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C0FA68BC3A2443D1B18A7214585CA509 }}
