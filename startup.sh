@@ -23,4 +23,4 @@ echo Using packages from virtual environment 'antenv' located at '/tmp/8dadf7c48
 export PYTHONPATH=$PYTHONPATH:"/tmp/8dadf7c488f5f76/antenv/lib/python$PYTHON_VERSION/site-packages"
 echo "Updated PYTHONPATH to '$PYTHONPATH'"
 . antenv/bin/activate
-GUNICORN_CMD_ARGS="--timeout 600 --access-logfile '-' --error-logfile '-' -c /opt/startup/gunicorn.conf.py --chdir=/tmp/8dadf7c488f5f76" gunicorn app:app
+GUNICORN_CMD_ARGS="--timeout 600 --access-logfile '-' --error-logfile '-' -c /opt/startup/gunicorn.conf.py --chdir=/tmp/8dadf7c488f5f76 -k uvicorn.workers.UvicornWorker" gunicorn app:app
