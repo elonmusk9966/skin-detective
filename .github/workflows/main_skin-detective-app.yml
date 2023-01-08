@@ -24,8 +24,8 @@ jobs:
 
       - name: Install necessary packages
         run: |
-          apt-get update
-          apt-get install ffmpeg libsm6 libxext6  -y
+          sudo apt-get update
+          sudo apt-get install ffmpeg libsm6 libxext6  -y
 
       - name: Create and start virtual environment
         run: |
