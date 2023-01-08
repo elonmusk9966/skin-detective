@@ -5,6 +5,7 @@ gdown
 requests
 fastapi
 uvicorn[standard]
+opencv-python-headless
 
 -f https://download.pytorch.org/whl/torch_stable.html
 torch==1.8.1+cpu 
