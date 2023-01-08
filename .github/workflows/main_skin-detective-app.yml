@@ -58,6 +58,11 @@ jobs:
         with:
           name: python-app
           path: .
+
+      - name: Install necessary packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install ffmpeg libsm6 libxext6  -y
           
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
