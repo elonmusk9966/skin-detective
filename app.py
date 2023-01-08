@@ -73,6 +73,13 @@ class Response_Item(BaseModel):
       default={}, title="Results for 3 classes (ez, ps, others).")
 
 
+class Request_predict_heatmap_Item(BaseModel):
+  image_url: str = Field(
+      default="", title="Image URL for skin diseases' detection.")
+  get_heatmap: bool = Field(
+      default=False, title="Get heat map if skin diseases detected.")
+
+
 @app.get('/')
 def greeting():
   return "Skin detective API."
@@ -140,6 +147,47 @@ def get_heatmap(
 
   result = get_gradcam(pil_img, class_name)
   return {"result": result}
+
+
+@app.post('/predict_heatmap',
+          response_model=Response_Item,
+          responses={
+              200: {
+                  "description": "Results for query image.",
+                  "content": {
+                      "application/json": {
+                          "example": {
+                              "result": {"ez": 1.0, "ps": 0.0, "others": 0.0, "final_decision": "ez", "heatmap": "base64_jgp_image"},
+                          }
+                      }
+                  }
+              }
+          },
+
+          )
+def get_predict_heatmap(
+    item: Request_predict_heatmap_Item = Body(
+        example={
+            "image_url": "https://d3hcoe79thio2n.cloudfront.net/wp-content/uploads/2017/09/eczema-300x169.jpg",
+            "get_heatmap": True
+        }
+    ),
+):
+  url = item.dict().get('image_url', None)
+  return_heatmap = item.dict().get('get_heatmap', False)
+  print(return_heatmap)
+  if url:
+    pil_img = url_to_img(url)
+
+  result = get_prediction(pil_img)
+  print(result)
+  if return_heatmap and result["final_decision"] in ["ez", "ps"]:
+    gradcam_result = get_gradcam(pil_img, result["final_decision"])
+    result["heatmap"] = gradcam_result["heatmap"]
+    return {"result": result}
+  else:
+    result["heatmap"] = ""
+    return {"result": result}
 
 
 @app.get('/healthcheck')
