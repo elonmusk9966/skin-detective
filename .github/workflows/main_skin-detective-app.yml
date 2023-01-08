@@ -34,8 +34,7 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements.txt
-      
-        
+
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
       - name: Upload artifact for deployment jobs
@@ -59,10 +58,6 @@ jobs:
           name: python-app
           path: .
 
-      - name: Install necessary packages
-        run: |
-          sudo apt-get update
-          sudo apt-get install ffmpeg libsm6 libxext6  -y
           
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -71,3 +66,5 @@ jobs:
           app-name: 'skin-detective-app'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CAFFDC964772401E8510FC830516F30F }}
+          scm-do-build-during-deployment: 'true'
+          enable-oryx-build: 'true'
