@@ -9,7 +9,7 @@ import base64
 import numpy as np
 from PIL import Image
 from io import BytesIO
-
+import cv2
 
 img_size = (224, 224)
 
@@ -144,12 +144,14 @@ def get_gradcam(image, class_name):
   grayscale_cam = grayscale_cam[0, :]
 
   grayscale_cam_image = (grayscale_cam*255).astype(np.uint8)
-  grayscale_cam_image = Image.fromarray(grayscale_cam_image, 'L')
+  heatmap = cv2.applyColorMap(grayscale_cam_image, cv2.COLORMAP_JET)
+  heatmap = cv2.cvtColor(heatmap, cv2.COLOR_BGR2RGB)
+  heatmap = Image.fromarray(heatmap, 'RGB')
 
   #base64_image = base64.b64encode(cv2.imencode('.jpg', grayscale_cam_image)[1]).decode()
 
   buffered = BytesIO()
-  grayscale_cam_image.save(buffered, format="JPEG")
+  heatmap.save(buffered, format="JPEG")
   base64_image = base64.b64encode(buffered.getvalue())
   result = {'heatmap': base64_image}
 
